@@ -7,14 +7,15 @@ const create = async (req, res) => {
   const { name, subject, type, value } = req.body;
 
   const grade = new Grade({
-    name,
-    subject,
-    type,
-    value,
+    name: name,
+    subject: subject,
+    type: type,
+    value: value,
   });
 
   try {
     const data = grade.save();
+    console.log(data);
     res.send({ message: "Grade inserido com sucesso" });
     logger.info(`POST /grade - ${JSON.stringify()}`);
   } catch (error) {
@@ -32,14 +33,15 @@ const findAll = async (req, res) => {
   var condition = name
     ? { name: { $regex: new RegExp(name), $options: "i" } }
     : {};
-
+  console.log(condition);
   try {
     const data = await Grade.find(condition);
+
     if (!data) {
-      res.status(404).send("Não foi encontrado nenhuma grade");
+      res.status(404).send("Não encontrado nenhuma grade");
     } else {
-      logger.info(`GET /grade`);
       res.send(data);
+      logger.info(`GET /grade`);
     }
   } catch (error) {
     res
@@ -56,14 +58,14 @@ const findOne = async (req, res) => {
     const data = await Grade.findById({ _id: id });
 
     if (!data) {
-      res.send(404).send(`Não foi encontrada grade com o id:${id}`);
+      res.status(404).send("Não encontrado nenhuma grade com o id: " + id);
     } else {
       res.send(data);
-      logger.info(`GET /grade - ${id}`);
+      logger.info(`GET /grade` + id);
     }
   } catch (error) {
     res.status(500).send({ message: "Erro ao buscar o Grade id: " + id });
-    logger.error(`GET /grade - ${JSON.stringify(error.message)}`);
+    logger.error(`GET /grade/${id} - ${JSON.stringify(error.message)}`);
   }
 };
 
@@ -82,7 +84,7 @@ const update = async (req, res) => {
     });
 
     if (!data) {
-      res.send(404).send(`Não foi encontrada grade com o id:${id}`);
+      res.status(404).send("Não encontrado nenhuma grade com o id: " + id);
     } else {
       res.send(data);
       logger.info(`PUT /grade - ${id} - ${JSON.stringify(req.body)}`);
@@ -126,4 +128,5 @@ const removeAll = async (req, res) => {
     logger.error(`DELETE /grade - ${JSON.stringify(error.message)}`);
   }
 };
+
 export default { create, findAll, findOne, update, remove, removeAll };
