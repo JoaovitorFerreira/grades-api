@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { gradesRoute } from "./routes/gradeRouter.js";
+import { gradeRouter } from "./routes/gradeRouter.js";
 import { db } from "./models/index.js";
 
 (async () => {
@@ -25,7 +25,7 @@ app.use(
     origin: "https://igti-modulo4-desafio.herokuapp.com/",
   })
 );
-app.use(gradesRoute);
+app.use(gradeRouter);
 
 app.get("/", (req, res) => {
   res.send("API em execucao");
