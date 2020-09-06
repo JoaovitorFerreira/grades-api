@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-import gradesRoute from "./routes/gradeRouter.js";
+import { gradesRoute } from "./routes/gradeRouter.js";
 import { db } from "./models/index.js";
 
 (async () => {
